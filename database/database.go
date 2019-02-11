@@ -1,9 +1,9 @@
 package database
 
 type Product struct {
-	Id   uint64  `json="id"`
-	Name string  `json="name"`
-	Cost float64 `json="cost"`
+	Id   uint64  `json:"id"`
+	Name string  `json:"name"`
+	Cost float64 `json:"cost"`
 }
 
 type IDataBase interface {
@@ -52,7 +52,7 @@ func (db *DataBase) Get(id uint64) (Product, error) {
 		}
 	}
 
-	return db.Products[0], nil
+	return Product{0, "adads", 12}, nil
 }
 
 func (db *DataBase) GetAll() ([]Product, error) {

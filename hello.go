@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -35,6 +36,7 @@ func getSortedProductsByCost(w http.ResponseWriter, r *http.Request) {
 }
 
 func getProduct(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "get")
 	w.Header().Set("Content-Type", "application/json")
 
 	params := mux.Vars(r)
@@ -50,6 +52,7 @@ func getProduct(w http.ResponseWriter, r *http.Request) {
 }
 
 func addProduct(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "ADD")
 	w.Header().Set("Content-Type", "application/json")
 	var product database.Product
 	_ = json.NewDecoder(r.Body).Decode(&product)
@@ -70,6 +73,7 @@ func updateProduct(w http.ResponseWriter, r *http.Request) {
 
 	var product database.Product
 	_ = json.NewDecoder(r.Body).Decode(&product)
+	product.Id = uint64(id)
 	err = db.Change(product)
 	json.NewEncoder(w).Encode(getResponseMap(product, err))
 }
@@ -94,7 +98,7 @@ func main() {
 
 	r.HandleFunc("/product/sort", getSortedProductsByCost).Methods("GET")
 	r.HandleFunc("/product/{id}", getProduct).Methods("GET")
-	r.HandleFunc("/pruduct", addProduct).Methods("POST")
+	r.HandleFunc("/product", addProduct).Methods("POST")
 	r.HandleFunc("/product/{id}", updateProduct).Methods("PUT")
 	r.HandleFunc("/product/{id}", deleteProduct).Methods("DELETE")
 	log.Fatal(http.ListenAndServe(":8000", r))
