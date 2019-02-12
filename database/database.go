@@ -7,23 +7,31 @@ type Product struct {
 }
 
 type IDataBase interface {
+	InitDatabase() error
 	AddProduct(product Product) (uint64, error)
 	DeleteProduct(id uint64) error
 	Change(product Product) error
 	Get(id uint64) (Product, error)
 	GetAll() ([]Product, error)
+	Close()
 }
 
-type DataBase struct {
+type StubDataBase struct {
 	Products []Product
 }
 
-func (db *DataBase) AddProduct(product Product) (uint64, error) {
-	db.Products = append(db.Products, product)
-	return 0, nil
+func (db *StubDataBase) InitDatabase() error {
+	return nil
 }
 
-func (db *DataBase) DeleteProduct(id uint64) error {
+func (db *StubDataBase) AddProduct(product Product) (uint64, error) {
+	product.Id = uint64(len(db.Products))
+
+	db.Products = append(db.Products, product)
+	return uint64(len(db.Products) - 1), nil
+}
+
+func (db *StubDataBase) DeleteProduct(id uint64) error {
 	var newProducts []Product
 	for _, p := range db.Products {
 		if p.Id != id {
@@ -35,7 +43,7 @@ func (db *DataBase) DeleteProduct(id uint64) error {
 	return nil
 }
 
-func (db *DataBase) Change(product Product) error {
+func (db *StubDataBase) Change(product Product) error {
 	for _, p := range db.Products {
 		if p.Id == product.Id {
 			p.Name = product.Name
@@ -45,16 +53,20 @@ func (db *DataBase) Change(product Product) error {
 	return nil
 }
 
-func (db *DataBase) Get(id uint64) (Product, error) {
+func (db *StubDataBase) Get(id uint64) (Product, error) {
 	for _, p := range db.Products {
 		if p.Id == id {
 			return p, nil
 		}
 	}
 
-	return Product{0, "adads", 12}, nil
+	return Product{}, nil
 }
 
-func (db *DataBase) GetAll() ([]Product, error) {
+func (db *StubDataBase) GetAll() ([]Product, error) {
 	return db.Products, nil
+}
+
+func (db *StubDataBase) Close() {
+
 }

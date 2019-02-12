@@ -11,7 +11,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var db database.IDataBase = new(database.DataBase)
+var db database.IDataBase = new(database.SqliteDB)
 
 func getResponseMap(result interface{}, err error) map[string]interface{} {
 
@@ -22,7 +22,7 @@ func getResponseMap(result interface{}, err error) map[string]interface{} {
 		response["err"] = ""
 	} else {
 		response["response"] = nil
-		response["err"] = err
+		response["err"] = err.Error()
 	}
 
 	return response
@@ -94,6 +94,12 @@ func deleteProduct(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	err := db.InitDatabase()
+	defer db.Close()
+	if err != nil {
+		panic(err)
+	}
+
 	r := mux.NewRouter()
 
 	r.HandleFunc("/product/sort", getSortedProductsByCost).Methods("GET")
@@ -102,4 +108,6 @@ func main() {
 	r.HandleFunc("/product/{id}", updateProduct).Methods("PUT")
 	r.HandleFunc("/product/{id}", deleteProduct).Methods("DELETE")
 	log.Fatal(http.ListenAndServe(":8000", r))
+	fmt.Println("asD")
+	fmt.Println("ad")
 }
