@@ -6,6 +6,7 @@ type Product struct {
 	Cost float64 `json:"cost"`
 }
 
+//Interface - provider to database
 type IDataBase interface {
 	InitDatabase() error
 	AddProduct(product Product) (uint64, error)
@@ -16,6 +17,7 @@ type IDataBase interface {
 	Close()
 }
 
+//test implementation using array as database
 type StubDataBase struct {
 	Products []Product
 }

@@ -11,10 +11,11 @@ import (
 	"github.com/gorilla/mux"
 )
 
+//Our database provider
 var db database.IDataBase = new(database.SqliteDB)
 
+// to create pretty response
 func getResponseMap(result interface{}, err error) map[string]interface{} {
-
 	response := make(map[string]interface{})
 
 	if err == nil {

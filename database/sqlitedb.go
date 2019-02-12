@@ -8,6 +8,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+//provider to SQLite database
 type SqliteDB struct {
 	DB *sql.DB
 }
