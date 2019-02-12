@@ -20,12 +20,15 @@
 Для GET/POST/PUT/DELETE запросов:
 
 Получение продукта по id:
+
 `$ curl -i http://localhost:8000/product/4`
 
 Получение продуктов, отсортированных по цене:
+
 `$ curl -i http://localhost:8000/product/sort`
 
 Добавление:
+
 `curl -i http://localhost:8000/product -d '{"name": "some_product", "cost": 1234}'`
 
 Удаление:
@@ -33,6 +36,7 @@
 `curl -i http://localhost:8000/product/1 -XDELETE`
 
 Изменение:
+
 `curl -i http://localhost:8000/product/1 -d '{"name": "some_product", "cost": 1234}' -XPUT`
 
 
