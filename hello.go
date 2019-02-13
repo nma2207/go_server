@@ -109,6 +109,4 @@ func main() {
 	r.HandleFunc("/product/{id}", updateProduct).Methods("PUT")
 	r.HandleFunc("/product/{id}", deleteProduct).Methods("DELETE")
 	log.Fatal(http.ListenAndServe(":8000", r))
-	fmt.Println("asD")
-	fmt.Println("ad")
 }
